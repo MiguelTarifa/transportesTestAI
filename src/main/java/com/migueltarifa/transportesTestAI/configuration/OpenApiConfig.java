@@ -3,7 +3,6 @@ package com.migueltarifa.transportesTestAI.configuration;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.License;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,8 +22,8 @@ public class OpenApiConfig {
                 .title("API de Transportes")
                 .version("1.0")
                 .description("Documentación generada para el proyecto de Transportes")
-                .contact(contact)
-                .license(new License().name("Apache 2.0").url("http://springdoc.org"));
+                .contact(contact);
+                //.license(new License().name("Apache 2.0").url("http://springdoc.org"));
 
         // Retornar la configuración de OpenAPI
         return new OpenAPI().info(apiInfo);
