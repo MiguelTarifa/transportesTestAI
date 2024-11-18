@@ -37,7 +37,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/transportes # Configuración para la BBDD
       - JAVA_OPTS=-Xms256M -Xmx256M          # Configuración para la JVM
     volumes:
-      - ./logs:/app/logs
+      - ./logs:/logs
     depends_on:
       - mysql                                # Asegurar que MySQL esté disponible antes de iniciar el backend
     ports:

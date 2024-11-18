@@ -14,6 +14,12 @@ COPY /target/transportesTestAI-1.0.0.jar /app/app.jar
 
 RUN chown -R admin:devops /app
 
+# Crear el directorio para los logs
+RUN mkdir -p /logs/application/transportesTestAI
+
+# Establecer los permisos adecuados para el directorio
+RUN chown -R admin:devops /logs/application
+
 USER admin
 
 # Expone el puerto donde la aplicación estará escuchando
