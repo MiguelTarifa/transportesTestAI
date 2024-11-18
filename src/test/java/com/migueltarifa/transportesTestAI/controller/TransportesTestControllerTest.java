@@ -36,7 +36,7 @@ class TransportesTestControllerTest {
         Mockito.when(transportesTestService.createVersion(Mockito.any(Version.class))).thenReturn(mockVersion);
 
         // Act & Assert
-        mockMvc.perform(post("/api/transportes/crearVersion")
+        mockMvc.perform(post("/transportes/crearVersion")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"idVersion\": \"v1.0\"}"))
                 .andExpect(status().isOk())
@@ -50,7 +50,7 @@ class TransportesTestControllerTest {
         Mockito.when(transportesTestService.getAllVersions()).thenReturn(mockVersions);
 
         // Act & Assert
-        mockMvc.perform(get("/api/transportes/versiones")
+        mockMvc.perform(get("/transportes/versiones")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
@@ -75,7 +75,7 @@ class TransportesTestControllerTest {
                 "fichero", "testFile.txt", "text/plain", "Contenido del archivo".getBytes());
 
         // Act & Assert
-        mockMvc.perform(multipart("/api/transportes/cargarFichero")
+        mockMvc.perform(multipart("/transportes/cargarFichero")
                 .file(mockFile)
                 .param("version", "v1.0")
                 .param("charset", "UTF-8"))
@@ -97,7 +97,7 @@ class TransportesTestControllerTest {
                 "fichero", "testFile.txt", "text/plain", "Contenido del archivo".getBytes());
 
         // Act & Assert
-        mockMvc.perform(multipart("/api/transportes/cargarFichero")
+        mockMvc.perform(multipart("/transportes/cargarFichero")
                 .file(mockFile)
                 .param("version", "v1.0")
                 .param("charset", "UTF-8"))

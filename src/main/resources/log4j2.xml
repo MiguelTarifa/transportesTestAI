@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <!-- Logs en consola -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n" />
+        </Console>
+
+        <!-- Logs de consola en un archivo separado -->
+        <RollingFile name="ConsoleFile" fileName="../logs/application/transportesTestAI/console.log" filePattern="logs/console-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%t] %-5level %logger{36} - %msg%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="3" />
+        </RollingFile>
+
+        <!-- Logs principales de la aplicación -->
+        <RollingFile name="ApplicationFile" fileName="../logs/application/transportesTestAI/transportesTestAI.log" filePattern="logs/application/transportesTestAI-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout>
+                <Pattern>******************** %-5level ********************\n Fecha: %d{yyyy-MM-dd HH:mm:ss}\n Hilo: [%t] \n Clase: %logger{36}\n Mensaje: %msg%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="20MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="3" />
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <!-- Logger para logs de consola -->
+        <Logger name="ConsoleLogger" level="info" additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="ConsoleFile" />
+        </Logger>
+
+        <!-- Logger para los logs principales de la aplicación -->
+        <Logger name="com.migueltarifa.transportesTestAI" level="debug" additivity="false">
+            <AppenderRef ref="ApplicationFile" />
+        </Logger>
+
+        <!-- Logger raíz para capturar cualquier otro log -->
+        <Root level="info" additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="ConsoleFile" />
+        </Root>
+    </Loggers>
+</Configuration>
