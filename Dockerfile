@@ -1,20 +1,18 @@
 # Usa una imagen base de Alpine con OpenJDK
-FROM openjdk:23-alpine
+FROM openjdk:23-slim
 
 # Crea un grupo con el GID 1001
 RUN addgroup --gid 1001 devops
 
 RUN adduser --uid 1001 --ingroup devops admin --disabled-password
 
-VOLUME /tmp
-
 # Establece el directorio de trabajo en el contenedor
 WORKDIR /app
 
 # Copia el archivo JAR al contenedor
-COPY transportesTestAI-1.0.0.jar /tmp/app.jar
+COPY /target/transportesTestAI-1.0.0.jar /app/app.jar
 
-RUN chown -R admin:devops /tmp
+RUN chown -R admin:devops /app
 
 USER admin
 

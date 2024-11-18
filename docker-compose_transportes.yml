@@ -1,0 +1,47 @@
+services:
+  # Servicio de MySQL
+  mysql:
+    image: mysql:8.0           # Imagen de MySQL versión 8.0
+    container_name: mysql_db    # Nombre del contenedor
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: indalo       # Contraseña del usuario root
+      MYSQL_DATABASE: transportes       # Nombre de la base de datos por defecto
+      MYSQL_USER: indalo                # Usuario adicional
+      MYSQL_PASSWORD: indalo            # Contraseña del usuario adicional
+    ports:
+      - "3306:3306"   # Exponer el puerto MySQL para conexiones externas
+    volumes:
+      - ./mysql_data:/var/lib/mysql_database
+      - ./sql/ddl_transportes_tablas.sql:/docker-entrypoint-initdb.d/init.sql # Monta el script de inicialización
+
+  # Servicio de phpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin:latest                # Imagen de phpMyAdmin
+    container_name: phpmyadmin
+    restart: always
+    environment:
+      PMA_HOST: mysql                       # El nombre del servicio de MySQL (coincide con el servicio 'mysql')
+      MYSQL_ROOT_PASSWORD: root_password    # La misma contraseña del root de MySQL
+    ports:
+      - "9091:80"                             # Exponer phpMyAdmin en el puerto 9091
+    depends_on:
+      - mysql                               # Asegurarse de que MySQL esté disponible antes de iniciar phpMyAdmin
+
+  transportes-back:
+      build:
+        context: ./java
+      container_name: transportes-back
+      environment:
+        - JAVA_OPTS=
+          -Xms256M
+          -Xmx256M
+      depends_on:
+        - mysql
+      ports:
+        - 8081:8080
+
+# Definir volumen persistente para los datos de MySQL
+volumes:
+  mysql_data:
+    external: false
