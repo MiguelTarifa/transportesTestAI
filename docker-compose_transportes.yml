@@ -12,7 +12,7 @@ services:
     ports:
       - "3306:3306"   # Exponer el puerto MySQL para conexiones externas
     volumes:
-      - ./mysql_data:/var/lib/mysql_database
+      - ./mysql_data:/var/lib/mysql
       - ./sql/ddl_transportes_tablas.sql:/docker-entrypoint-initdb.d/init.sql # Monta el script de inicialización
 
   # Servicio de phpMyAdmin
@@ -28,18 +28,20 @@ services:
     depends_on:
       - mysql                               # Asegurarse de que MySQL esté disponible antes de iniciar phpMyAdmin
 
+    # Servicio de aplicación Java
   transportes-back:
-      build:
-        context: ./java
-      container_name: transportes-back
-      environment:
-        - JAVA_OPTS=
-          -Xms256M
-          -Xmx256M
-      depends_on:
-        - mysql
-      ports:
-        - 8081:8080
+    build:
+      context: ./java                        # Ruta al directorio con el Dockerfile
+    container_name: transportes-back
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/transportes # Configuración para la BBDD
+      - JAVA_OPTS=-Xms256M -Xmx256M          # Configuración para la JVM
+    volumes:
+      - ./logs:/app/logs
+    depends_on:
+      - mysql                                # Asegurar que MySQL esté disponible antes de iniciar el backend
+    ports:
+      - "8081:8081"                         # Exponer el puerto del backend en el puerto 8081
 
 # Definir volumen persistente para los datos de MySQL
 volumes:
