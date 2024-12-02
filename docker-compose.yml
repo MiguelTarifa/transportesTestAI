@@ -10,7 +10,7 @@ services:
       MYSQL_USER: indalo                # Usuario adicional
       MYSQL_PASSWORD: indalo            # Contraseña del usuario adicional
     ports:
-      - "3306:3306"   # Exponer el puerto MySQL para conexiones externas
+      - "3307:3306"   # Exponer el puerto MySQL para conexiones externas
     volumes:
       - ./mysql_data:/var/lib/mysql
       - ./sql/ddl_transportes_tablas.sql:/docker-entrypoint-initdb.d/init.sql # Monta el script de inicialización
@@ -28,10 +28,10 @@ services:
     depends_on:
       - mysql                               # Asegurarse de que MySQL esté disponible antes de iniciar phpMyAdmin
 
-    # Servicio de aplicación Java
+  # Servicio de aplicación Java
   transportes-back:
     build:
-      context: ./java                        # Ruta al directorio con el Dockerfile
+      context: ./                        # Ruta al directorio con el Dockerfile
     container_name: transportes-back
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/transportes # Configuración para la BBDD
@@ -41,7 +41,7 @@ services:
     depends_on:
       - mysql                                # Asegurar que MySQL esté disponible antes de iniciar el backend
     ports:
-      - "8081:8081"                         # Exponer el puerto del backend en el puerto 8081
+      - "8081:81"                         # Exponer el puerto del backend en el puerto 8081
 
 # Definir volumen persistente para los datos de MySQL
 volumes:
